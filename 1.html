@@ -1,1 +1,255 @@
-hello j and a 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockWizard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+    <style>
+        /* styles.css */
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        header {
+            background-color: #1e1e1e;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        header nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        header nav ul li {
+            margin: 0 1rem;
+        }
+
+        header nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        main {
+            padding: 2rem;
+        }
+
+        section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        #stock-table {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        #chat-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        #chat-window {
+            height: 200px;
+            overflow-y: auto;
+            border: 1px solid #333;
+            padding: 1rem;
+            background: #2a2a2a;
+        }
+
+        #chat-input {
+            padding: 0.5rem;
+            border: 1px solid #555;
+            border-radius: 4px;
+            flex-grow: 1;
+            background: #1e1e1e;
+            color: #e0e0e0;
+        }
+
+        #send-message {
+            padding: 0.5rem 1rem;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #send-message:hover {
+            background-color: #444;
+        }
+
+        div {
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        #news-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #news-section ul li {
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background: #2a2a2a;
+            color: #e0e0e0;
+        }
+
+        #quiz-section, #reward-section, #leaderboard-section {
+            margin-top: 1.5rem;
+        }
+
+        #leaderboard {
+            list-style: none;
+            padding: 0;
+        }
+
+        #leaderboard li {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background: #2a2a2a;
+            color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">StockWizard</div>
+        <nav>
+            <ul>
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="#forecasts">Forecasts</a></li>
+                <li><a href="#game">Gamification</a></li>
+                <li><a href="#chatbot">Chatbot</a></li>
+                <li><a href="#news-section">News</a></li>
+                <li><a href="#ml-tools">ML Tools</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="dashboard">
+            <h1>Stock Market Dashboard</h1>
+            <div id="stock-table">
+                <!-- Real-time stock data will populate here -->
+            </div>
+        </section>
+
+        <section id="forecasts">
+            <h2>Market Forecasts</h2>
+            <canvas id="forecast-chart"></canvas>
+        </section>
+
+        <section id="game">
+            <h2>Gamification</h2>
+            <p>Earn points by making accurate stock predictions!</p>
+            <button id="play-game">Play Game</button>
+            <div id="game-status"></div>
+
+            <div id="quiz-section">
+                <h3>Quiz</h3>
+                <button id="start-quiz">Start Quiz</button>
+                <div id="quiz-area"></div>
+            </div>
+
+            <div id="reward-section">
+                <h3>Rewards</h3>
+                <p>Earn PaperCash by participating in games and quizzes.</p>
+                <p>Current Balance: <span id="papercash-balance">$0</span></p>
+            </div>
+
+            <div id="leaderboard-section">
+                <h3>Leaderboard</h3>
+                <ul id="leaderboard">
+                    <!-- Leaderboard entries will appear here -->
+                </ul>
+            </div>
+        </section>
+
+        <section id="chatbot">
+            <h2>Ask StockWizard</h2>
+            <div id="chat-container">
+                <div id="chat-window">
+                    <!-- Chat messages will appear here -->
+                </div>
+                <input type="text" id="chat-input" placeholder="Ask a question...">
+                <button id="send-message">Send</button>
+            </div>
+        </section>
+
+        <section id="news-section">
+            <h2>Latest Stock News</h2>
+            <ul id="news-list">
+                <!-- News articles will populate here -->
+            </ul>
+        </section>
+
+        <section id="ml-tools">
+            <h2>Machine Learning Tools</h2>
+            <p>Use our advanced ML models to predict stock trends.</p>
+            <button id="train-model">Train Model</button>
+            <button id="predict-trends">Predict Trends</button>
+            <div id="ml-results">
+                <!-- ML results will appear here -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 StockWizard. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // script.js
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // Real-time data simulation
+            const stockTable = document.getElementById("stock-table");
+            const stocks = [
+                { name: "AAPL", price: 150.25, change: "+1.5%" },
+                { name: "GOOGL", price: 2803.42, change: "-0.3%" },
+                { name: "AMZN", price: 3450.01, change: "+0.8%" },
+            ];
+
+            stocks.forEach(stock => {
+                const stockCard = document.createElement("div");
+                stockCard.innerHTML = `<strong>${stock.name}</strong><br>Price: $${stock.price}<br>Change: ${stock.change}`;
+                stockCard.style.padding = "1rem";
+                stockCard.style.border = "1px solid #333";
+                stockCard.style.borderRadius = "8px";
+                stockCard.style.background = "#2a2a2a";
+                stockCard.style.color = "#e0e0e0";
+                stockTable.appendChild(stockCard);
+            });
+
+            // Chatbot functionality
+            const chatInput = document.getElementById("chat-input");
+            const chatWindow = document.getElementById("chat-window");
+
+            document.getElementById("send-message").
+
