@@ -53,7 +53,7 @@
         }
 
         header {
-            background-color: grey;
+            background-color: rgb(35, 37, 66);
         }
 
         section h2 {
@@ -75,7 +75,7 @@
         <div class="container-fluid">
             <!-- Logo Added Here -->
             <a class="navbar-brand" href="#">
-                <img src="C:\Users\Manoj bhosale\Pictures\Camera Roll\1000_F_545983443_gji9D9D01xeSZpPcErnXvIGpgwrMJ5tw.jpg"alt="StockWizard Logo" width="40" height="40" class="d-inline-block align-text-top">
+                <img src="C:\Users\suraj\Downloads\Stockwizard-main\Stockwizard-main\Screenshot 2024-12-25 004637.png"alt="StockWizard Logo" width="40" height="40" class="d-inline-block align-text-top">
                 StockWizard
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -172,22 +172,32 @@
                     <div class="card-header bg-primary text-white">
                         Latest Market News
                     </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <h5 class="card-title">Big Tech Earnings Drive Market Gains</h5>
-                            <p class="card-text">Quarterly results for major tech companies push markets higher...</p>
-                        </div>
-                        <div class="mb-3">
-                            <h5 class="card-title">Oil Prices Surge Amidst Supply Cuts</h5>
-                            <p class="card-text">Global oil markets react to announcements of reduced production...</p>
-                        </div>
-                        <div class="mb-3">
-                            <h5 class="card-title">Federal Reserve Hints at Rate Changes</h5>
-                            <p class="card-text">Investors speculate on upcoming policy adjustments from the Fed...</p>
-                        </div>
+                    <div class="card-body" id="news-container">
+                        <!-- News articles will be injected here by JavaScript -->
                     </div>
                 </div>
-            </div>
+            
+                <script>
+                    const apiKey = '4e500e83c0cc47988318c670f04214cd';
+                    const newsContainer = document.getElementById('news-container');
+            
+                    fetch(`https://newsapi.org/v2/top-headlines?category=business&apiKey=${apiKey}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.articles.forEach(article => {
+                                const newsItem = document.createElement('div');
+                                newsItem.className = 'mb-3';
+                                newsItem.innerHTML = `
+                                    <a href="${article.url}" class="text-decoration-none" target="_blank">
+                                        <h5 class="card-title">${article.title}</h5>
+                                        <p class="card-text">${article.description}</p>
+                                    </a>
+                                `;
+                                newsContainer.appendChild(newsItem);
+                            });
+                        })
+                        .catch(error => console.error('Error fetching news:', error));
+                </script>
 
             <!-- Right Sidebar -->
             <div class="col-md-4">
