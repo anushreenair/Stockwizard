@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockWizard - Portfolio</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .dark-theme {
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        .dark-theme .navbar {
+            background-color: #000000 !important;
+        }
+
+        .dark-theme .card {
+            background-color: #1e1e1e;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="1.html">
+                <img src="logo.png" alt="StockWizard Logo" width="40" height="40" class="d-inline-block align-text-top">
+                StockWizard
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="1.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="news.html">News</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Portfolio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showLoginForm()">Sign In</a>
+                    </li>
+                </ul>
+                <div class="form-check form-switch text-white">
+                    <input class="form-check-input" type="checkbox" id="themeSwitch" onclick="toggleTheme()">
+                    <label class="form-check-label" for="themeSwitch">Dark Mode</label>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="text-white text-center py-3 bg-primary">
+        <h1>StockWizard Portfolio</h1>
+        <p>Manage your stock portfolio effectively</p>
+    </header>
+
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                Your Portfolio
+            </div>
+            <div class="card-body">
+                <p>View and manage your stocks below:</p>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Stock Name</th>
+                            <th scope="col">Ticker</th>
+                            <th scope="col">Shares</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="portfolioTable">
+                        <!-- Sample data -->
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Apple</td>
+                            <td>AAPL</td>
+                            <td>10</td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" onclick="removeStock(this)">Remove</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button class="btn btn-success" onclick="addStockForm()">Add Stock</button>
+
+                <div id="addStock" class="mt-4" style="display: none;">
+                    <h5>Add New Stock</h5>
+                    <form id="addStockForm">
+                        <div class="mb-3">
+                            <label for="stockName" class="form-label">Stock Name</label>
+                            <input type="text" class="form-control" id="stockName" placeholder="Enter stock name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="ticker" class="form-label">Ticker</label>
+                            <input type="text" class="form-control" id="ticker" placeholder="Enter ticker">
+                        </div>
+                        <div class="mb-3">
+                            <label for="shares" class="form-label">Shares</label>
+                            <input type="number" class="form-control" id="shares" placeholder="Enter number of shares">
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="addStock()">Add</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-primary text-white text-center py-3 mt-4">
+        <p>&copy; 2024 StockWizard. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+
+        function addStockForm() {
+            document.getElementById('addStock').style.display = 'block';
+        }
+
+        function addStock() {
+            const stockName = document.getElementById('stockName').value;
+            const ticker = document.getElementById('ticker').value;
+            const shares = document.getElementById('shares').value;
+
+            if (stockName && ticker && shares) {
+                const table = document.getElementById('portfolioTable');
+                const rowCount = table.rows.length + 1;
+                const row = table.insertRow();
+                row.innerHTML = `
+                    <th scope="row">${rowCount}</th>
+                    <td>${stockName}</td>
+                    <td>${ticker}</td>
+                    <td>${shares}</td>
+                    <td><button class="btn btn-danger btn-sm" onclick="removeStock(this)">Remove</button></td>
+                `;
+                document.getElementById('addStockForm').reset();
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
+
+        function removeStock(button) {
+            const row = button.parentNode.parentNode;
+            row.remove();
+        }
+    </script>
+</body>
+</html>

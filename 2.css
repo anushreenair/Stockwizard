@@ -144,4 +144,15 @@ body {
   .btn:hover {
     background-color: #0056b3;
   }
+
+  .stock-ticker p {
+    display: inline-block;
+    white-space: nowrap;
+    animation: marquee 15s linear infinite;
+}
+@keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
   
