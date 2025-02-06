@@ -40,3 +40,6 @@ fetch(`https://newsapi.org/v2/top-headlines?category=business&apiKey=${apiKey}`)
     });
   })
   .catch(error => console.error('Error fetching news:', error));
+
+
+  
