@@ -7,30 +7,90 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            transition: background-color 0.3s, color 0.3s;
-        }
+        /* styles.css */
+body {
+    transition: background-color 0.3s, color 0.3s;
+}
 
-        .dark-theme {
-            background-color: #121212;
-            color: #ffffff;
-        }
+.light-theme {
+    background-color: #ffffff;
+    color: #000000;
+}
 
-        .dark-theme .navbar {
-            background-color: #000000 !important;
-        }
+.dark-theme {
+    background-color: #121212;
+    color: #ffffff;
+}
 
-        .dark-theme .card {
-            background-color: #1e1e1e;
-            color: #ffffff;
-        }
+.light-theme .navbar {
+    background-color: #f8f9fa !important;
+    color: #000000 !important;
+}
+
+.dark-theme .navbar {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}
+
+.light-theme .card {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.dark-theme .card {
+    background-color: #1e1e1e;
+    color: #ffffff;
+}
+
+.light-theme .navbar-brand,
+.light-theme .nav-link {
+    color: #000000 !important;
+}
+
+.dark-theme .navbar-brand,
+.dark-theme .nav-link {
+    color: #ffffff !important;
+}
+
+.light-theme .navbar-toggler-icon,
+.dark-theme .navbar-toggler-icon {
+    filter: invert(1);
+}
+
+.header, .footer {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.light-theme .header, .light-theme .footer {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+.dark-theme .header, .dark-theme .footer {
+    background-color: #001f3f;
+    color: #ffffff;
+}
+
+/* Form Styles */
+.form-check-input {
+    cursor: pointer;
+}
+
+.table-striped tbody tr:nth-of-type(odd).light-theme {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.table-striped tbody tr:nth-of-type(odd).dark-theme {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="1.html">
-                <img src="logo.png" alt="StockWizard Logo" width="40" height="40" class="d-inline-block align-text-top">
+            <a class="navbar-brand" href="cssss.html">
+                <img src="images/std.png" alt="StockWizard Logo" width="40" height="40" class="d-inline-block align-text-top">
                 StockWizard
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,7 +99,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="1.html">Home</a>
+                        <a class="nav-link" href="cssss.html">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="news.html">News</a>
@@ -51,7 +111,7 @@
                         <a class="nav-link" href="#" onclick="showLoginForm()">Sign In</a>
                     </li>
                 </ul>
-                <div class="form-check form-switch text-white">
+                <div class="form-check form-switch text-white ">
                     <input class="form-check-input" type="checkbox" id="themeSwitch" onclick="toggleTheme()">
                     <label class="form-check-label" for="themeSwitch">Dark Mode</label>
                 </div>
@@ -71,7 +131,7 @@
             </div>
             <div class="card-body">
                 <p>View and manage your stocks below:</p>
-                <table class="table table-striped">
+                <table class="table table-striped bg-primary text-white ">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -81,7 +141,7 @@
                             <th scope="col">Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="portfolioTable">
+                    <tbody id="portfolioTable  bg-primary text-white">
                         <!-- Sample data -->
                         <tr>
                             <th scope="row">1</th>
