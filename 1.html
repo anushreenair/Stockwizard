@@ -69,7 +69,56 @@
         .real-time-sidebar {
             position: sticky;
             top: 20px;
+
+
+
         }
+
+
+        /* Ticker Animation */
+        .ticker-wrap {
+            overflow: hidden;
+            background: rgb(223, 9, 77);
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .ticker {
+            display: inline-block;
+            padding: 10px 0;
+            animation: ticker 30s linear infinite;
+        }
+
+        @keyframes ticker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .stock-movement-up { color: green; }
+        .stock-movement-down { color: red; }
+
+
+        .market-insight-card {
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .market-insight-card:hover {
+            transform: scale(1.05);
+        }
+
+        .carousel-container {
+            max-width: 100%;
+            height: 300px; /* Reduced height */
+            overflow: hidden;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+
     </style>
 </head>
 <body>
@@ -89,18 +138,19 @@
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">News</a>
+                        <a class="nav-link" href="news.html">News</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Portfolio</a>
+                        <a class="nav-link" href="portfolio.html">Portfolio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" onclick="showLoginForm()">Sign In</a>
                     </li>
                 </ul>
                 <div class="form-check form-switch text-white">
+                    
                     <input class="form-check-input" type="checkbox" id="themeSwitch" onclick="toggleTheme()">
-                    <label class="form-check-label" for="themeSwitch">Dark Mode</label>
+                      <label class="form-check-label" for="themeSwitch">Dark Mode</label>
                 </div>
             </div>
         </div>
@@ -111,59 +161,50 @@
         <p>Get the latest insights and trends in the stock market</p>
     </header>
 
-    <div class="container mt-4">
-        <!-- Stock Ticker Section -->
-        <div class="row mb-1">
-            <div class="col">
-                <div class="d-flex overflow-auto bg-dark text-white py-2 px-3">
-                    <div class="me-4">AAPL: $175.32 <span class="text-success">▲ 1.23%</span></div>
-                    <div class="me-4">GOOG: $2853.67 <span class="text-danger">▼ 0.75%</span></div>
-                    <div class="me-4">AMZN: $3467.34 <span class="text-success">▲ 0.92%</span></div>
-                    <div class="me-4">TSLA: $893.45 <span class="text-danger">▼ 1.10%</span></div>
-                </div>
-            </div>
+    <div class="ticker-wrap">
+        <div class="ticker">
+            AAPL: $175.32 ▲ | GOOGL: $2,853.67 ▼ | AMZN: $3,467.34 ▲ | 
+            MSFT: $342.56 ▼ | TSLA: $893.45 ▲ | NVDA: $456.78 ▲ | 
+            META: $345.90 ▼ | INTC: $29.45 ▲
         </div>
+    </div>
 
         <!-- Main Layout -->
         <div class="row">
             <!-- Left Section -->
-            <div class="col-md-8">
-                
-                <div id="marketCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+            <div class="container-fluid p-0">
+                <!-- Carousel -->
+                <div id="marketCarousel" class="carousel slide carousel-container" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#marketCarousel" data-bs-slide-to="0" class="active"></button>
+                        <button type="button" data-bs-target="#marketCarousel" data-bs-slide-to="1"></button>
+                        <button type="button" data-bs-target="#marketCarousel" data-bs-slide-to="2"></button>
+                    </div>
+                    
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            
-                            
-                            <img src="images/std2.jpg"width="1230" height="180" class="d-block w-100" alt="Market Trends">
-                            <div class="carousel-caption d-none d-md-block">
+                            <img src="">
+                            <div class="carousel-caption d-none d-md-block text-danger">
                                 <h5>Market Trends</h5>
-                                <p>Stay updated with the latest market movements.</p>
+                                <p>Latest insights and analysis</p>
                             </div>
                         </div>
                         <div class="carousel-item">
-                            
-                            <img src="images/download 1.jpg"  width="1230" height="180"class="d-block w-100" alt="Tech Stocks">
-                            <div class="carousel-caption d-none d-md-block">
-                                <h5>Tech Stocks on the Rise</h5>
-                                <p>Learn more about the latest tech stock gains.</p>
+                            <img src="images/download 2.jpg" class="d-block w-100" alt="Tech Stocks">
+                            <div class="carousel-caption d-none d-md-block text-danger">
+                                <h5>Tech Stock Insights</h5>
+                                <p>Performance of leading tech companies</p>
                             </div>
                         </div>
                         <div class="carousel-item">
-                            
-                            <img src="images/download 2.jpg" width="1230" height="180"class="d-block w-100" alt="Global Markets">
-                            <div class="carousel-caption d-none d-md-block">
-                                <h5>Global Market Insights</h5>
-                                <p>Analyze trends in global stock exchanges.</p>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <img src="images/download 3.jpg"width="1230" height="180" class="d-block w-100" alt="AI-Generated Market Graph">
-                            <div class="carousel-caption d-none d-md-block">
-                                <h5>AI Market Analysis</h5>
-                                <p>Discover insights with AI-powered stock market tools.</p>
+                            <img src="images/std2.jpg" class="d-block w-100" alt="Global Markets">
+                            <div class="carousel-caption d-none d-md-block text-danger">
+                                <h5>Global Market Overview</h5>
+                                <p>International market trends</p>
                             </div>
                         </div>
                     </div>
+                    
                     <button class="carousel-control-prev" type="button" data-bs-target="#marketCarousel" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
@@ -173,14 +214,109 @@
                         <span class="visually-hidden">Next</span>
                     </button>
                 </div>
+            </div>
+        
 
-                <!-- Main News Section -->
-                <div class="card">
-                    <div class="card-header bg-primary text-white">
-                        Latest Market News
-                    </div>
-                    <div class="card-body" id="news-container">
-                        <!-- News articles will be injected here by JavaScript -->
+                <div class="container-fluid mt-4">
+                    <div class="row">
+                        <!-- Market Insights Section -->
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header bg-primary text-white">
+                                    Daily Market Updates
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <!-- Market Trend Cards -->
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card market-insight-card">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Market Sentiment</h5>
+                                                    <p class="card-text">
+                                                        Bullish Trend <span class="stock-movement-up">▲ 2.3%</span>
+                                                    </p>
+                                                    <small class="text-muted">Last updated: Just now</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card market-insight-card">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Top Performers</h5>
+                                                    <ul class="list-unstyled">
+                                                        <li>NVIDIA <span class="stock-movement-up">▲ 4.5%</span></li>
+                                                        <li>Microsoft <span class="stock-movement-up">▲ 2.1%</span></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card market-insight-card">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Market Volatility</h5>
+                                                    <p class="card-text">
+                                                        VIX Index: 18.45 
+                                                        <span class="stock-movement-down">▼ 0.5%</span>
+                                                    </p>
+                                                    <small class="text-muted">Moderate Volatility</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                    <!-- Detailed Stock Performance -->
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <h6>Detailed Stock Performance</h6>
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Stock</th>
+                                                        <th>Price</th>
+                                                        <th>Change</th>
+                                                        <th>% Change</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Apple (AAPL)</td>
+                                                        <td>$175.32</td>
+                                                        <td class="stock-movement-up">▲ 2.45</td>
+                                                        <td class="stock-movement-up">+1.42%</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Google (GOOGL)</td>
+                                                        <td>$2,853.67</td>
+                                                        <td class="stock-movement-down">▼ 1.23</td>
+                                                        <td class="stock-movement-down">-0.43%</td>
+                                                    </tr>
+                                                    <!-- Add more rows as needed -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <!-- Right Sidebar -->
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header bg-primary text-white">
+                                    Market Pulse
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item d-flex justify-content-between">
+                                            S&P 500 <span class="stock-movement-up">▲ 0.67%</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between">
+                                            NASDAQ <span class="stock-movement-down">▼ 0.12%</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             
