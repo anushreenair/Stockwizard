@@ -3,17 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StockWizard - News</title>
+    <title>StockWizard</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&family=Montserrat:wght@400;700&family=Badoni+Moda:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            transition: background-color 0.3s, color 0.3s;
+            overflow-y: scroll; /* Enable scrollable effect */
+            font-family: Arial, sans-serif;
+        }
+
+        .dark-theme {
+            background-color:rgb(27, 27, 220);
+            color: #ffffff;
+        }
+
+        .dark-theme .navbar {
+            background-color: #181855 !important;
+        }
+
+        .dark-theme .card,
+        .dark-theme .floating-login {
+            background-color: #192478;
+            color: #ffffff;
+            border: 1px solid #333;
+        }
+
+        .floating-login {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            background-color: white;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            display: none;
+        }
+
+        .gamification-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        .dark-theme .gamification-section {
+            background-color: #1e1e1e;
+        }
+
+        header {
+            padding: 2rem; /* Increase padding */
+            margin-bottom: 1rem; /* Adjust margin if needed */
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Montserrat', sans-serif; /* Apply new font */
+        }
+
+        header h1 {
+            font-family: 'Badoni Moda', serif; /* Apply Badoni Moda font */
+            font-size: 40px; /* Increase font size to 90px */
+            font-weight: bold;
+            color: black; /* Set font color to black */
+            text-shadow: none; /* Remove text shadow */
+        }
+
+        section h2 {
+            color: black;
+        }
+
+        .navbar {
+            background-color: rgb(22, 17, 70) !important;
+            height: 100px; 
+            display: flex;
+            align-items: center; 
+        }
+
+        .navbar .navbar-brand img {
+            height: 80px; 
+        }
+
+        .real-time-sidebar {
+            position: sticky;
+            top: 20px;
+        }
+
+        
+        .ticker-wrap {
+            overflow: hidden;
+            background: rgb(9, 223, 16);
+            white-space: nowrap;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ticker {
+            display: inline-block;
+            padding: 10px 0;
+            animation: ticker 60s linear infinite;
+        }
+
+        @keyframes ticker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .card {
+            margin-bottom: 20px;
+        }
+        .no-news {
+            text-align: center;
+            font-size: 1.2rem;
+            color: gray;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
         <div class="container-fluid">
-            <a class="navbar-brand" href="cssss.html">
-                <img src="images/std.png" alt="StockWizard Logo" width="40" height="40" class="d-inline-block align-text-top">
-                StockWizard
+            <!-- Logo Added Here -->
+            <a class="navbar-brand" href="index.html">
+                <img src="newlogo1-Photoroom.png" alt="StockWizard Logo" class="logo d-inline-block align-text-top">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -21,19 +138,64 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="cssss.html">Home</a>
+                        <a class="nav-link" href="index.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">News</a>
+                        <a class="nav-link active" href="news.html">News</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="portfolio.html">Portfolio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showLoginForm()">Sign In</a>
+                        <a class="nav-link" href="signin.html">Sign In</a>
                     </li>
                 </ul>
-                <div class="form-check form-switch text-white">
+
+                <!-- Sign In Modal -->
+                <div class="modal fade" id="signInModal" tabindex="-1" aria-labelledby="signInModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="signInModalLabel">Sign In</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form onsubmit="return validateForm()">
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email address</label>
+                                        <input type="email" class="form-control" id="email" placeholder="Enter email">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Password</label>
+                                        <input type="password" class="form-control" id="password" placeholder="Password">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100">Sign In</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bootstrap JS -->
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+                <script src="news.js"></script>
+                <script>
+                    function toggleTheme() {
+                        document.body.classList.toggle('dark-theme');
+                    }
+
+                    function validateForm() {
+                        var email = document.getElementById('email').value;
+                        var password = document.getElementById('password').value;
+                        if (email === "" || password === "") {
+                            alert("Please fill in all fields.");
+                            return false;
+                        }
+                        return true;
+                    }
+                </script>
+
+                <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="themeSwitch" onclick="toggleTheme()">
                     <label class="form-check-label" for="themeSwitch">Dark Mode</label>
                 </div>
@@ -41,45 +203,22 @@
         </div>
     </nav>
 
-    <header class="text-white text-center py-3">
-        <h1>StockWizard News</h1>
-        <p>Get the latest news and updates in the stock market</p>
+    <header class="text-center py-3">
+        <h1>StockWizard</h1>
     </header>
 
     <div class="container mt-4">
         <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Search news..." id="search-input">
-            <button class="btn btn-primary" type="button" onclick="searchNews()">Search</button>
+            <button class="btn btn-primary" onclick="searchNews()">Search</button>
         </div>
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                Latest Market News
-            </div>
-            <div class="card-body" id="news-container">
-                <!-- News articles will be injected here by JavaScript -->
-            </div>
-        </div>
+        <div id="news-container" class="mt-4"></div>
     </div>
 
     <footer class="bg-primary text-white text-center py-3 mt-4">
         <p>&copy; 2024 StockWizard. All rights reserved.</p>
     </footer>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="news.js"></script>
-    <script>
-        function showLoginForm() {
-            document.getElementById('loginForm').style.display = 'block';
-        }
-
-        function hideLoginForm() {
-            document.getElementById('loginForm').style.display = 'none';
-        }
-
-        function toggleTheme() {
-            document.body.classList.toggle('dark-theme');
-        }
-    </script>
 </body>
 </html>

@@ -41,5 +41,28 @@ fetch(`https://newsapi.org/v2/top-headlines?category=business&apiKey=${apiKey}`)
   })
   .catch(error => console.error('Error fetching news:', error));
 
+document.addEventListener('DOMContentLoaded', () => {
+    const apiKey = '4e500e83c0cc47988318c670f04214cd'; // Replace with your actual API key
+    const tickerElement = document.querySelector('.ticker');
 
-  
+    function fetchStockData() {
+        fetch(`https://financialmodelingprep.com/api/v3/quotes/nyse?apikey=${apiKey}`)
+            .then(response => response.json())
+            .then(data => {
+                tickerElement.innerHTML = ''; // Clear previous ticker items
+                data.forEach(stock => {
+                    const stockItem = document.createElement('span');
+                    stockItem.className = stock.change > 0 ? 'stock-movement-up' : 'stock-movement-down';
+                    stockItem.innerHTML = `${stock.symbol}: $${stock.price} ${stock.change > 0 ? '▲' : '▼'} ${stock.change}% | `;
+                    tickerElement.appendChild(stockItem);
+                });
+            })
+            .catch(error => console.error('Error fetching stock data:', error));
+    }
+
+    fetchStockData();
+    setInterval(fetchStockData, 60000); // Update every 60 seconds
+});
+
+
+
