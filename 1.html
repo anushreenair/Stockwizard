@@ -6,21 +6,20 @@
     <title>StockWizard</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bandoni+Moda:wght@400;700&display=swap" rel="stylesheet">
     <style>
-         
-   
         body {
             transition: background-color 0.3s, color 0.3s;
             overflow-y: scroll; /* Enable scrollable effect */
         }
 
         .dark-theme {
-            background-color:black;
+            background-color: black;
             color: #ffffff;
         }
 
         .dark-theme .navbar {
-            background-color: #000000 !important;
+            background-color: #333 !important; /* Corrected color */
         }
 
         .dark-theme .card,
@@ -40,7 +39,7 @@
             border: 1px solid #ddd;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             padding: 20px;
-            display: none;
+            display: none; /* Corrected display property */
         }
 
         .gamification-section {
@@ -56,6 +55,7 @@
 
         header {
             background-color: rgb(35, 37, 66);
+            height: 70px;
         }
 
         section h2 {
@@ -63,17 +63,13 @@
         }
 
         .navbar {
-            background-color: black !important;
+            background-color: rgb(35, 37, 66) !important; /* Corrected color */
         }
 
         .real-time-sidebar {
             position: sticky;
             top: 20px;
-
-
-
         }
-
 
         /* Ticker Animation */
         .ticker-wrap {
@@ -93,9 +89,9 @@
             0% { transform: translateX(100%); }
             100% { transform: translateX(-100%); }
         }
+
         .stock-movement-up { color: green; }
         .stock-movement-down { color: red; }
-
 
         .market-insight-card {
             transition: transform 0.3s;
@@ -114,11 +110,27 @@
 
         .carousel-item img {
             width: 100%;
-            height: 300px;
+            height: auto; /* Corrected height */
             object-fit: cover;
         }
 
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
 
+        .animated-title {
+            font-family: 'Bandoni Moda', serif;
+            animation: fadeIn 2s ease-in-out;
+        }
+        .table-responsive {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .detailed-stock-performance {
+            max-height: 200px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
@@ -126,8 +138,7 @@
         <div class="container-fluid">
             <!-- Logo Added Here -->
             <a class="navbar-brand" href="#">
-                <img src="images/std.png"alt="StockWizard Logo" width="100" height="40" class="d-inline-block align-text-top">
-                
+                <img src="images/std.png" alt="StockWizard Logo" width="100" height="40" class="d-inline-block align-text-top">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -148,263 +159,491 @@
                     </li>
                 </ul>
                 <div class="form-check form-switch text-white">
-                    
                     <input class="form-check-input" type="checkbox" id="themeSwitch" onclick="toggleTheme()">
-                      <label class="form-check-label" for="themeSwitch">Dark Mode</label>
+                    <label class="form-check-label" for="themeSwitch">Dark Mode</label>
                 </div>
             </div>
         </div>
     </nav>
 
     <header class="text-white text-center py-3">
-        <h1>StockWizard</h1>
+        <h1 class="animated-title">StockWizard</h1>
         <p>Get the latest insights and trends in the stock market</p>
     </header>
 
     <div class="ticker-wrap">
-        <div class="ticker">
-            AAPL: $175.32 ▲ | GOOGL: $2,853.67 ▼ | AMZN: $3,467.34 ▲ | 
-            MSFT: $342.56 ▼ | TSLA: $893.45 ▲ | NVDA: $456.78 ▲ | 
-            META: $345.90 ▼ | INTC: $29.45 ▲
+        <div class="ticker" id="stockTicker">
+            <!-- Ticker items will be dynamically added here -->
         </div>
     </div>
 
-        <!-- Main Layout -->
-        <div class="row">
-            <!-- Left Section -->
-            <div class="container-fluid p-0">
-                <!-- Carousel -->
-                <div id="marketCarousel" class="carousel slide carousel-container" data-bs-ride="carousel">
-                    <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#marketCarousel" data-bs-slide-to="0" class="active"></button>
-                        <button type="button" data-bs-target="#marketCarousel" data-bs-slide-to="1"></button>
-                        <button type="button" data-bs-target="#marketCarousel" data-bs-slide-to="2"></button>
+   <!-- Main Layout -->
+<div class="row">
+    <!-- Live Ticker Section -->
+    <div class="ticker-container bg-dark text-light p-2">
+        <div id="stockTicker" class="d-inline"></div>
+    </div>
+
+    <!-- Carousel Section -->
+    <div class="container-fluid p-0">
+        <div id="marketCarousel" class="carousel slide carousel-container" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#marketCarousel" data-bs-slide-to="0" class="active" title="Slide 1"></button>
+                <button type="button" data-bs-target="#marketCarousel" data-bs-slide-to="1" title="Slide 2"></button>
+                <button type="button" data-bs-target="#marketCarousel" data-bs-slide-to="2" title="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="std3.jpg" class="d-block w-100" alt="Market Trends">
+                    <div class="carousel-caption d-none d-md-block text-danger">
+                        <h5 id="carouselTitle1">Market Trends</h5> <!-- Added id -->
+                        <p id="carouselDescription1">Latest insights and analysis</p> <!-- Added id -->
                     </div>
-                    
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="">
-                            <div class="carousel-caption d-none d-md-block text-danger">
-                                <h5>Market Trends</h5>
-                                <p>Latest insights and analysis</p>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <img src="images/download 2.jpg" class="d-block w-100" alt="Tech Stocks">
-                            <div class="carousel-caption d-none d-md-block text-danger">
-                                <h5>Tech Stock Insights</h5>
-                                <p>Performance of leading tech companies</p>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <img src="images/std2.jpg" class="d-block w-100" alt="Global Markets">
-                            <div class="carousel-caption d-none d-md-block text-danger">
-                                <h5>Global Market Overview</h5>
-                                <p>International market trends</p>
-                            </div>
-                        </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="9635.jpg" class="d-block w-100" alt="Tech Stocks">
+                    <div class="carousel-caption d-none d-md-block text-danger">
+                        <h5 id="carouselTitle2">Tech Stock Insights</h5> <!-- Added id -->
+                        <p id="carouselDescription2">Performance of leading tech companies</p> <!-- Added id -->
                     </div>
-                    
-                    <button class="carousel-control-prev" type="button" data-bs-target="#marketCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#marketCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
+                </div>
+                <div class="carousel-item">
+                    <img src="Stockwizard-main/glowing-blue-pulse-trace-computer-monitor-symbolizes-healthy-heartbeat-generated-by-ai.jpg" class="d-block w-100" alt="Global Markets">
+                    <div class="carousel-caption d-none d-md-block text-danger">
+                        <h5 id="carouselTitle3">Global Market Overview</h5> <!-- Added id -->
+                        <p id="carouselDescription3">International market trends</p> <!-- Added id -->
+                    </div>
                 </div>
             </div>
-        
+            <button class="carousel-control-prev" type="button" data-bs-target="#marketCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#marketCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</div>
 
-                <div class="container-fluid mt-4">
-                    <div class="row">
-                        <!-- Market Insights Section -->
-                        <div class="col-md-8">
-                            <div class="card">
-                                <div class="card-header bg-primary text-white">
-                                    Daily Market Updates
-                                </div>
+<!-- Include Bootstrap and Axios -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Styling -->
+<style>
+    /* Ticker Styling */
+    .ticker-container {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #00ff00; /* Stock-green color */
+        border-bottom: 2px solid #00ff00;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    /* Carousel Caption Styling */
+    .carousel-caption h5 {
+        font-size: 2rem;
+        font-weight: bold;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+    }
+
+    .carousel-caption p {
+        font-size: 1.2rem;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+    }
+</style>
+
+<!-- JavaScript to Fetch Real-Time Data -->
+<script>
+    // Fetch real-time stock data using Finnhub API (replace 'YOUR_API_KEY' with your actual API key)
+    const apiKey = 'YOUR_API_KEY'; // Corrected API key placeholder
+    const stockSymbols = ['AAPL', 'GOOG', 'MSFT', 'AMZN', 'TSLA', 'META', 'NFLX', 'NVDA', 
+    'AMD', 'INTC', 'ADBE', 'ORCL', 'PYPL', 'CSCO', 'IBM', 'QCOM', 
+    'BABA', 'V', 'MA', 'DIS', 'WMT', 'JPM', 'BAC', 'PEP'];
+
+    // Function to fetch live stock prices
+    async function fetchStockData() {
+        let tickerContent = '';
+
+        try {
+            const requests = stockSymbols.map(symbol => axios.get(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${apiKey}`));
+            const responses = await Promise.all(requests);
+
+            responses.forEach((response, index) => {
+                const { c: currentPrice, d: change, dp: percentChange } = response.data;
+                const symbol = stockSymbols[index];
+
+                // Add to ticker
+                tickerContent += `${symbol}: $${currentPrice.toFixed(2)} ${change >= 0 ? '▲' : '▼'} ${percentChange.toFixed(2)}% | `;
+            });
+
+            // Update the ticker
+            document.getElementById('stockTicker').textContent = tickerContent;
+        } catch (error) {
+            console.error('Error fetching stock data:', error);
+            document.getElementById('stockTicker').textContent = 'Error fetching stock data.';
+        }
+    }
+
+    // Function to fetch data for carousel (you can customize it to show different stock information)
+    async function fetchCarouselData() {
+        try {
+            const response1 = await axios.get(`https://finnhub.io/api/v1/quote?symbol=AAPL&token=${apiKey}`);
+            const response2 = await axios.get(`https://finnhub.io/api/v1/quote?symbol=GOOG&token=${apiKey}`);
+            const response3 = await axios.get(`https://finnhub.io/api/v1/quote?symbol=MSFT&token=${apiKey}`);
+
+            // Update carousel captions
+            document.getElementById('carouselTitle1').textContent = 'Apple Stock Insights';
+            document.getElementById('carouselDescription1').textContent = `Price: $${response1.data.c.toFixed(2)}, Change: ${response1.data.dp.toFixed(2)}%`;
+
+            document.getElementById('carouselTitle2').textContent = 'Google Stock Performance';
+            document.getElementById('carouselDescription2').textContent = `Price: $${response2.data.c.toFixed(2)}, Change: ${response2.data.dp.toFixed(2)}%`;
+
+            document.getElementById('carouselTitle3').textContent = 'Microsoft Stock Trends';
+            document.getElementById('carouselDescription3').textContent = `Price: $${response3.data.c.toFixed(2)}, Change: ${response3.data.dp.toFixed(2)}%`;
+        } catch (error) {
+            console.error('Error fetching carousel data:', error);
+        }
+    }
+
+    // Function to fetch data for detailed stock performance
+    async function fetchRealTimeData() {
+        const stocks = ['AAPL', 'GOOGL', 'AMZN', 'MSFT', 'META','TSLA', 'NFLX', 'NVDA', 'INTC', 'AMD', 
+        'BABA', 'ADBE', 'ORCL', 'JPM', 'BAC', 
+        'C', 'GS', 'V', 'MA', 'JNJ', 
+        'PFE', 'MRNA', 'UNH', 'ABT', 'WMT', 
+        'COST', 'TGT', 'HD', 'MCD', 'XOM', 'CVX', 'BP'];
+        const apiKey = 'cukbc4pr01qo08i7tf00cukbc4pr01qo08i7tf0g'; // Replace with your actual API key
+        const stockPerformanceBody = document.getElementById('stock-performance-body');
+        stockPerformanceBody.innerHTML = '';
+
+        try {
+            const requests = stocks.map(stock => fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stock}&apikey=${apiKey}`));
+            const responses = await Promise.all(requests);
+
+            responses.forEach(async (response, index) => {
+                const data = await response.json();
+                const quote = data['Global Quote'];
+                const price = parseFloat(quote['05. price']).toFixed(2);
+                const change = parseFloat(quote['09. change']).toFixed(2);
+                const changePercent = quote['10. change percent'];
+                const stock = stocks[index];
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${stock}</td>
+                    <td>$${price}</td>
+                    <td class="${change >= 0 ? 'stock-movement-up' : 'stock-movement-down'}">${change >= 0 ? '▲' : '▼'} ${change}</td>
+                    <td class="${change >= 0 ? 'stock-movement-up' : 'stock-movement-down'}">${changePercent}</td>
+                `;
+                stockPerformanceBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Error fetching stock data:', error);
+        }
+    }
+
+    // Fetch data initially and then refresh every 10 seconds
+    fetchStockData();
+    fetchCarouselData();
+    fetchRealTimeData();
+    setInterval(() => {
+        fetchStockData();
+        fetchCarouselData();
+        fetchRealTimeData();
+    }, 10000);
+</script>
+
+<!-- Middle Section -->
+<div class="container-fluid mt-4">
+    <div class="row">
+        <!-- Market Insights Section -->
+        <div class="col-12">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0">📈 Daily Market Insights</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <!-- Market Sentiment -->
+                        <div class="col-md-4">
+                            <div class="card text-center border-0 shadow-sm h-100">
                                 <div class="card-body">
-                                    <div class="row">
-                                        <!-- Market Trend Cards -->
-                                        <div class="col-md-4 mb-3">
-                                            <div class="card market-insight-card">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Market Sentiment</h5>
-                                                    <p class="card-text">
-                                                        Bullish Trend <span class="stock-movement-up">▲ 2.3%</span>
-                                                    </p>
-                                                    <small class="text-muted">Last updated: Just now</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mb-3">
-                                            <div class="card market-insight-card">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Top Performers</h5>
-                                                    <ul class="list-unstyled">
-                                                        <li>NVIDIA <span class="stock-movement-up">▲ 4.5%</span></li>
-                                                        <li>Microsoft <span class="stock-movement-up">▲ 2.1%</span></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mb-3">
-                                            <div class="card market-insight-card">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Market Volatility</h5>
-                                                    <p class="card-text">
-                                                        VIX Index: 18.45 
-                                                        <span class="stock-movement-down">▼ 0.5%</span>
-                                                    </p>
-                                                    <small class="text-muted">Moderate Volatility</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-            
-                                    <!-- Detailed Stock Performance -->
-                                    <div class="row mt-3">
-                                        <div class="col-12">
-                                            <h6>Detailed Stock Performance</h6>
-                                            <table class="table table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Stock</th>
-                                                        <th>Price</th>
-                                                        <th>Change</th>
-                                                        <th>% Change</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Apple (AAPL)</td>
-                                                        <td>$175.32</td>
-                                                        <td class="stock-movement-up">▲ 2.45</td>
-                                                        <td class="stock-movement-up">+1.42%</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Google (GOOGL)</td>
-                                                        <td>$2,853.67</td>
-                                                        <td class="stock-movement-down">▼ 1.23</td>
-                                                        <td class="stock-movement-down">-0.43%</td>
-                                                    </tr>
-                                                    <!-- Add more rows as needed -->
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                                    <h5 class="card-title text-primary">Market Sentiment</h5>
+                                    <p class="card-text">
+                                        <span class="badge bg-success rounded-pill">
+                                            Bullish Trend ▲ 2.3%
+                                        </span>
+                                    </p>
+                                    <small class="text-muted">Updated: Just now</small>
+                                </div>
+                                <div class="card-footer bg-light">
+                                    <span class="text-muted">Positive momentum in key sectors</span>
                                 </div>
                             </div>
                         </div>
-            
-                        <!-- Right Sidebar -->
+                        <!-- Top Performers -->
                         <div class="col-md-4">
-                            <div class="card">
-                                <div class="card-header bg-primary text-white">
-                                    Market Pulse
-                                </div>
+                            <div class="card text-center border-0 shadow-sm h-100">
                                 <div class="card-body">
-                                    <ul class="list-group">
-                                        <li class="list-group-item d-flex justify-content-between">
-                                            S&P 500 <span class="stock-movement-up">▲ 0.67%</span>
+                                    <h5 class="card-title text-primary">Top Performers</h5>
+                                    <ul class="list-unstyled mb-0">
+                                        <li>
+                                            <span class="fw-bold">NVIDIA</span>
+                                            <span class="text-success">▲ 4.5%</span>
                                         </li>
-                                        <li class="list-group-item d-flex justify-content-between">
-                                            NASDAQ <span class="stock-movement-down">▼ 0.12%</span>
+                                        <li>
+                                            <span class="fw-bold">Microsoft</span>
+                                            <span class="text-success">▲ 2.1%</span>
                                         </li>
                                     </ul>
                                 </div>
+                                <div class="card-footer bg-light">
+                                    <span class="text-muted">Tech stocks lead the rally</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            
-                <script>
-                    const apiKey = '4e500e83c0cc47988318c670f04214cd';
-                    const newsContainer = document.getElementById('news-container');
-            
-                    fetch(`https://newsapi.org/v2/top-headlines?category=business&apiKey=${apiKey}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            data.articles.forEach(article => {
-                                const newsItem = document.createElement('div');
-                                newsItem.className = 'mb-3';
-                                newsItem.innerHTML = `
-                                    <a href="${article.url}" class="text-decoration-none" target="_blank">
-                                        <h5 class="card-title">${article.title}</h5>
-                                        <p class="card-text">${article.description}</p>
-                                    </a>
-                                `;
-                                newsContainer.appendChild(newsItem);
-                            });
-                        })
-                        .catch(error => console.error('Error fetching news:', error));
-                </script>
-
-            <!-- Right Sidebar -->
-            <div class="col-md-4">
-                <div class="real-time-sidebar">
-                    <div class="card mb-4">
-                        <div class="card-header bg-primary text-white">
-                            Real-Time Data Insights
-                        </div>
-                        <div class="card-body">
-                            <p>Fetching live data...</p>
-                            <ul>
-                                <li>S&P 500 Index: <span class="text-success">▲ 0.67%</span></li>
-                                <li>NASDAQ Composite: <span class="text-danger">▼ 0.12%</span></li>
-                                <li>Gold Prices: <span class="text-success">▲ 0.45%</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header bg-primary text-white">
-                            Upcoming Events
-                        </div>
-                        <div class="card-body">
-                            <p>Stay tuned for key economic events:</p>
-                            <ul>
-                                <li>Fed Rate Decision - Friday</li>
-                                <li>Big Tech Quarterly Earnings - Monday</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Gamification Section -->
-        <div class="gamification-section">
-            <h2>Gamification</h2>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">PaperCash</h5>
-                            <p class="card-text">Practice trading with virtual currency and improve your skills!</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Rewards</h5>
-                            <p class="card-text">Earn rewards for achieving trading milestones.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Leaderboard</h5>
-                            <p class="card-text">Compete with others and climb the leaderboard!</p>
+                        <!-- Market Volatility -->
+                        <div class="col-md-4">
+                            <div class="card text-center border-0 shadow-sm h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title text-primary">Market Volatility</h5>
+                                    <p class="card-text">
+                                        VIX Index: <span class="fw-bold">18.45</span>
+                                        <span class="text-danger">▼ 0.5%</span>
+                                    </p>
+                                    <small class="text-muted">Moderate Volatility</small>
+                                </div>
+                                <div class="card-footer bg-light">
+                                    <span class="text-muted">Steady market conditions</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+<!-- Detailed Stock Performance -->
+<div class="row mt-3">
+    <div class="col-12">
+        <div class="card border-primary">
+                <div class="table-responsive detailed-stock-performance">
+                <h6>Detailed Stock Performance</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive detailed-stock-performance">
+                    <table class="table table-striped table-bordered border-primary">
+                        <thead>
+                            <tr>
+                                <th>Stock</th>
+                                <th>Price</th>
+                                <th>Change</th>
+                                <th>% Change</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stock-performance-body">
+                            <!-- Rows will be dynamically populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Sample stock symbols to display
+const stocks = ['AAPL', 'GOOGL', 'AMZN', 'MSFT', 'META'];
+
+// Function to fetch real-time data
+async function fetchStockData() {
+    try {
+        // Using Twelve Data API as an example
+        const apiKey = '98bc099f974e429f900a697d4a74da64'; // Replace with your real API key
+        const baseUrl = 'https://api.twelvedata.com/quote';
+
+        let tableBody = '';
+        for (let stock of stocks) {
+            const response = await fetch(`${baseUrl}?symbol=${stock}&apikey=${apiKey}`);
+            const data = await response.json();
+            
+            // Extract relevant data
+            const price = parseFloat(data.close).toFixed(2);
+            const change = parseFloat(data.change).toFixed(2);
+            const percentChange = parseFloat(data.percent_change).toFixed(2);
+            
+            // Determine up/down movement
+            const movementClass = change >= 0 ? 'stock-movement-up' : 'stock-movement-down';
+
+            // Create table row
+            tableBody += `
+                <tr>
+                    <td>${data.symbol}</td>
+                    <td>$${price}</td>
+                    <td class="${movementClass}">${change >= 0 ? '▲' : '▼'} ${Math.abs(change)}</td>
+                    <td class="${movementClass}">${percentChange >= 0 ? '+' : ''}${percentChange}%</td>
+                </tr>
+            `;
+        }
+
+        // Populate the table with the fetched data
+        document.getElementById('stock-performance-body').innerHTML = tableBody;
+    } catch (error) {
+        console.error('Error fetching stock data:', error);
+    }
+}
+
+// Refresh stock data every 60 seconds
+fetchStockData();
+setInterval(fetchStockData, 60000); // 60,000 ms = 60 seconds
+</script>
+
+
+<script>
+async function fetchRealTimeData() {
+    const stocks = ['AAPL', 'GOOGL', 'AMZN', 'MSFT', 'META'];
+    const apiKey = 'cukbc4pr01qo08i7tf00cukbc4pr01qo08i7tf0g'; // Replace with your actual API key
+    const stockPerformanceBody = document.getElementById('stock-performance-body');
+    stockPerformanceBody.innerHTML = '';
+
+    for (const stock of stocks) {
+        try {
+            const response = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stock}&apikey=${apiKey}`);
+            const data = await response.json();
+            const quote = data['Global Quote'];
+            const price = parseFloat(quote['05. price']).toFixed(2);
+            const change = parseFloat(quote['09. change']).toFixed(2);
+            const changePercent = quote['10. change percent'];
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${stock}</td>
+                <td>$${price}</td>
+                <td class="${change >= 0 ? 'stock-movement-up' : 'stock-movement-down'}">${change >= 0 ? '▲' : '▼'} ${change}</td>
+                <td class="${change >= 0 ? 'stock-movement-up' : 'stock-movement-down'}">${changePercent}</td>
+            `;
+            stockPerformanceBody.appendChild(row);
+        } catch (error) {
+            console.error('Error fetching stock data:', error);
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', fetchRealTimeData);
+</script>
+    </div>
+    </div>
+
+            
+
+    <!-- Motivational Quote Section -->
+    <div class="mt-4 text-center">
+        <h5 id="quote" class="text-muted"></h5>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+let balance = 10000;
+const badges = [
+    { name: "Beginner Trader", threshold: 11000 },
+    { name: "Intermediate Trader", threshold: 15000 },
+    { name: "Pro Investor", threshold: 20000 }
+];
+const quotes = [
+    "An investment in knowledge pays the best interest. - Benjamin Franklin",
+    "Risk comes from not knowing what you are doing. - Warren Buffett",
+    "The stock market is a device for transferring money from the impatient to the patient. - Warren Buffett"
+];
+
+async function fetchStockPrice(symbol) {
+    try {
+        let response = await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=5min&apikey=demo`);
+        let data = await response.json();
+        let timeSeries = data["Time Series (5min)"];
+        let latestTime = Object.keys(timeSeries)[0];
+        return parseFloat(timeSeries[latestTime]["1. open"]);
+    } catch (error) {
+        console.error("Error fetching stock price:", error);
+        return null;
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    let badgesEarned = [];
+    let leaderboard = [{ name: "You", balance: balance }];
+    let stockChart;
+
+    function updateLeaderboard() {
+        let leaderboardElement = document.getElementById("leaderboard");
+        leaderboardElement.innerHTML = "";
+        leaderboard.sort((a, b) => b.balance - a.balance);
+        leaderboard.forEach((player, index) => {
+            let listItem = document.createElement("li");
+            listItem.classList.add("list-group-item");
+            listItem.innerHTML = `<strong>${index + 1}. ${player.name}</strong>: $${player.balance}`;
+            leaderboardElement.appendChild(listItem);
+        });
+    }
+
+    function checkBadges() {
+        const badgeContainer = document.getElementById("badges");
+        badgeContainer.innerHTML = ""; 
+        badges.forEach((badge) => {
+            if (balance >= badge.threshold && !badgesEarned.includes(badge.name)) {
+                badgesEarned.push(badge.name);
+                let badgeElement = document.createElement("span");
+                badgeElement.classList.add("badge", "badge-success", "p-2", "m-1");
+                badgeElement.innerText = badge.name;
+                badgeContainer.appendChild(badgeElement);
+            }
+        });
+    }
+
+    function updateQuote() {
+        const quoteElement = document.getElementById("quote");
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        quoteElement.innerText = quotes[randomIndex];
+    }
+
+    document.getElementById("transaction-form").addEventListener("submit", async function (event) {
+        event.preventDefault();
+        let stockSymbol = document.getElementById("stock-symbol").value.toUpperCase();
+        let transactionType = document.getElementById("transaction-type").value;
+        let amount = parseFloat(document.getElementById("transaction-amount").value);
+        let stockPrice = await fetchStockPrice(stockSymbol);
+        if (!stockPrice) {
+            alert("Could not fetch stock price. Try again later.");
+            return;
+        }
+        let totalCost = amount * stockPrice;
+        if (transactionType === "buy" && balance >= totalCost) {
+            balance -= totalCost;
+        } else if (transactionType === "sell") {
+            balance += totalCost;
+        }
+        document.getElementById("paper-cash").innerText = balance;
+        checkBadges();
+        leaderboard[0].balance = balance;
+        updateLeaderboard();
+    });
+
+    updateLeaderboard();
+    updateQuote();
+});
+</script>
+
+
+
+</script>
+
 
     <footer class="bg-primary text-white text-center py-3 mt-4">
         <p>&copy; 2024 StockWizard. All rights reserved.</p>
@@ -412,6 +651,8 @@
 
     <!-- Floating Login Form -->
     <div id="loginForm" class="floating-login">
+        <!-- Close Button -->
+        <button class="close-btn" onclick="hideLoginForm()">&times;</button>
         
         <h5>Login</h5>
         <form>
@@ -424,10 +665,9 @@
                 <input type="password" class="form-control" id="password" placeholder="Password">
             </div>
             <button type="button" class="btn btn-primary w-100" onclick="hideLoginForm()">Login</button>
-            
         </form>
     </div>
-    
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -441,6 +681,24 @@
 
         function toggleTheme() {
             document.body.classList.toggle('dark-theme');
+        }
+
+        // Auto-hide login form after 5 seconds if not filled
+        setTimeout(() => {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            if (!email && !password) {
+                hideLoginForm();
+            }
+        }, 5000); // 5 seconds
+
+        function showLoginForm() {
+            document.getElementById('loginForm').style.display = 'block';
+        }
+
+        function hideLoginForm() {
+            document.getElementById('loginForm').style.display = 'none';
         }
     </script>
 </body>
