@@ -21,7 +21,7 @@ window.addEventListener('click', (e) => {
   }
 });
 
-const apiKey = '4e500e83c0cc47988318c670f04214cd';
+const apiKey = 'your_actual_api_key'; // Replace with your actual API key
 const newsContainer = document.getElementById('news-container');
 
 fetch(`https://newsapi.org/v2/top-headlines?category=business&apiKey=${apiKey}`)
@@ -42,22 +42,37 @@ fetch(`https://newsapi.org/v2/top-headlines?category=business&apiKey=${apiKey}`)
   .catch(error => console.error('Error fetching news:', error));
 
 document.addEventListener('DOMContentLoaded', () => {
-    const apiKey = '4e500e83c0cc47988318c670f04214cd'; // Replace with your actual API key
+    const apiKey = 'your_actual_api_key'; // Replace with your actual API key
     const tickerElement = document.querySelector('.ticker');
 
-    function fetchStockData() {
-        fetch(`https://financialmodelingprep.com/api/v3/quotes/nyse?apikey=${apiKey}`)
-            .then(response => response.json())
-            .then(data => {
-                tickerElement.innerHTML = ''; // Clear previous ticker items
-                data.forEach(stock => {
-                    const stockItem = document.createElement('span');
-                    stockItem.className = stock.change > 0 ? 'stock-movement-up' : 'stock-movement-down';
-                    stockItem.innerHTML = `${stock.symbol}: $${stock.price} ${stock.change > 0 ? '▲' : '▼'} ${stock.change}% | `;
-                    tickerElement.appendChild(stockItem);
-                });
-            })
-            .catch(error => console.error('Error fetching stock data:', error));
+    async function fetchStockData() {
+        try {
+            const response = await fetch(`https://finnhub.io/api/v1/quote?symbol=AAPL&token=${apiKey}`);
+            const data = await response.json();
+
+            tickerElement.innerHTML = ''; // Clear previous ticker items
+
+            const stockSymbols = ['AAPL', 'GOOG', 'MSFT', 'AMZN', 'TSLA', 'META', 'NFLX', 'NVDA', 
+                                  'AMD', 'INTC', 'ADBE', 'ORCL', 'PYPL', 'CSCO', 'IBM', 'QCOM', 
+                                  'BABA', 'V', 'MA', 'DIS', 'WMT', 'JPM', 'BAC', 'PEP'];
+
+            const requests = stockSymbols.map(symbol => fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${apiKey}`));
+            const responses = await Promise.all(requests);
+
+            responses.forEach(async (response, index) => {
+                const data = await response.json();
+                const { c: currentPrice, d: change, dp: percentChange } = data;
+                const symbol = stockSymbols[index];
+
+                const stockItem = document.createElement('span');
+                stockItem.className = change >= 0 ? 'stock-movement-up' : 'stock-movement-down';
+                stockItem.innerHTML = `${symbol}: $${currentPrice.toFixed(2)} ${change >= 0 ? '▲' : '▼'} ${percentChange.toFixed(2)}% | `;
+                tickerElement.appendChild(stockItem);
+            });
+        } catch (error) {
+            console.error('Error fetching stock data:', error);
+            tickerElement.textContent = 'Error fetching stock data.';
+        }
     }
 
     fetchStockData();
