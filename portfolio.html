@@ -3,583 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StockWizard - Portfolio</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="css/portfolio.css">
-    <style>
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: transparent;
-            border: none;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        #addStock {
-            display: none;
-        }
-        .progress-custom {
-            height: 25px;
-        }
-        #portfolioHealthBar {
-            width: 0%;
-        }
-        .hidden {
-            display: none;
-        }
-    </style>
+    <title>StockWizard - Portfolio Analytics</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/apexcharts@3.41.0/dist/apexcharts.css" rel="stylesheet">
+    <link href="static/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="index.html">
-                <img src="images/std.png" alt="StockWizard Logo" width="40" height="40" class="d-inline-block align-text-top">
-                StockWizard
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">StockWizard</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
+                        <a class="nav-link" href="index.html">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="news.html">News</a>
+                        <a class="nav-link active" href="portfolio.html">Portfolio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Portfolio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showLoginForm()">Sign In</a>
+                        <button class="btn btn-outline-light ms-2" id="themeToggle">
+                            <i class="fas fa-moon"></i>
+                        </button>
                     </li>
                 </ul>
-                <div class="form-check form-switch text-white">
-                    <input class="form-check-input" type="checkbox" id="themeSwitch" onclick="toggleTheme()">
-                    <label class="form-check-label" for="themeSwitch">Dark Mode</label>
-                </div>
-                <div id="userProfile" class="text-white ms-3 hidden">
-                    <i class="fas fa-user-circle"></i> My Profile
-                </div>
             </div>
         </div>
     </nav>
 
-    <header class="text-white text-center py-3 bg-primary">
-        <h1>StockWizard Portfolio</h1>
-        <p>Manage your stock portfolio effectively</p>
-    </header>
+    <div class="container py-4">
+        <!-- Portfolio Overview -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="analytics-card p-4">
+                    <h2>Portfolio Value</h2>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="display-4 fw-bold" id="portfolioValue">$0.00</div>
+                        <div class="trend-indicator" id="valueChange">
+                            <span class="trend-arrow"></span>
+                            <span>0.00%</span>
+                        </div>
+                    </div>
+                    <div id="portfolioChart" class="mt-4" style="height: 200px;"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="analytics-card p-4">
+                    <h2>Health Score</h2>
+                    <div class="health-gauge">
+                        <div class="display-4" id="healthScore">0</div>
+                        <div class="progress mt-2">
+                            <div class="progress-bar" id="healthBar" role="progressbar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <h5>AI Recommendations</h5>
+                        <div id="aiRecommendations" class="pattern-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <!-- ML Portfolio Analysis Section -->
-    <div class="container-fluid mt-4">
+        <!-- Risk Analysis -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="analytics-card p-4">
+                    <h2>Risk Metrics</h2>
+                    <div class="metric-item">
+                        <span class="metric-label">Value at Risk (VaR)</span>
+                        <span class="metric-value" id="varMetric">-</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Conditional VaR</span>
+                        <span class="metric-value" id="cvarMetric">-</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Sharpe Ratio</span>
+                        <span class="metric-value" id="sharpeRatio">-</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Maximum Drawdown</span>
+                        <span class="metric-value" id="maxDrawdown">-</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="analytics-card p-4">
+                    <h2>Market Regime</h2>
+                    <div id="regimeChart" style="height: 250px;"></div>
+                    <div class="chart-legend" id="regimeLegend"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical Analysis -->
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <div class="analytics-card p-4">
+                    <h2>Pattern Detection</h2>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Stock</th>
+                                    <th>Pattern</th>
+                                    <th>Confidence</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="patternTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="analytics-card p-4">
+                    <h2>Market Sentiment</h2>
+                    <div id="sentimentTrends"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Portfolio Management -->
         <div class="row">
-            <div class="col-12">
-                <div class="card shadow-lg border-0">
-                    <div class="card-header bg-info text-white text-center">
-                        <h4 class="mb-0">🤖 AI Portfolio Analysis</h4>
+            <div class="col-md-12">
+                <div class="analytics-card p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2>Holdings</h2>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStockModal">
+                            <i class="fas fa-plus"></i> Add Stock
+                        </button>
                     </div>
-                    <div class="card-body">
-                        <!-- Portfolio Overview -->
-                        <div class="row mb-4">
-                            <div class="col-md-6">
-                                <div class="card border-info h-100">
-                                    <div class="card-header bg-light">
-                                        <h5 class="card-title mb-0">Portfolio Health Score</h5>
-                                    </div>
-                                    <div class="card-body text-center">
-                                        <div class="progress mb-3 progress-custom">
-                                            <div id="portfolioHealthBar" class="progress-bar" role="progressbar" aria-label="Portfolio Health Score">
-                                                <span id="portfolioHealthScore">0%</span>
-                                            </div>
-                                        </div>
-                                        <p id="portfolioHealthMessage" class="mb-0"></p>
-                                        <!-- Combined Graph for Data and Stock Predictions Scatter Plot -->
-                                        <div class="mt-4">
-                                            <h5 class="card-title mb-0">Stock Predictions</h5>
-                                            <canvas id="combinedStockPredictionsChart"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card border-info h-100">
-                                    <div class="card-header bg-light">
-                                        <h5 class="card-title mb-0">Risk Distribution</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <canvas id="riskDistributionChart"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- AI Recommendations -->
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card border-info">
-                                    <div class="card-header bg-light">
-                                        <h5 class="card-title mb-0">AI Stock Recommendations</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Stock</th>
-                                                        <th>Current Position</th>
-                                                        <th>AI Recommendation</th>
-                                                        <th>Predicted Change</th>
-                                                        <th>Confidence</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="aiRecommendationsTable">
-                                                    <!-- Recommendations will be populated here -->
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Your Portfolio Section -->
-                        <div class="row mt-4">
-                            <div class="col-12">
-                                <div class="card border-info">
-                                    <div class="card-header bg-primary text-white">
-                                        Your Portfolio
-                                    </div>
-                                    <div class="card-body">
-                                        <p>View and manage your stocks below:</p>
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">#</th>
-                                                    <th scope="col">Stock Name</th>
-                                                    <th scope="col">Ticker</th>
-                                                    <th scope="col">Shares</th>
-                                                    <th scope="col">Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="portfolioTable">
-                                                <!-- Sample data -->
-                                                <tr>
-                                                    <th scope="row">1</th>
-                                                    <td>Apple</td>
-                                                    <td>AAPL</td>
-                                                    <td>10</td>
-                                                    <td>
-                                                        <button class="btn btn-danger btn-sm" onclick="removeStock(this)">Remove</button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <button class="btn btn-success" onclick="addStockForm()">Add Stock</button>
-
-                                        <div id="addStock" class="mt-4">
-                                            <h5>Add New Stock</h5>
-                                            <form id="addStockForm">
-                                                <div class="mb-3">
-                                                    <label for="stockName" class="form-label">Stock Name</label>
-                                                    <input type="text" class="form-control" id="stockName" placeholder="Enter stock name">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="ticker" class="form-label">Ticker</label>
-                                                    <input type="text" class="form-control" id="ticker" placeholder="Enter ticker">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="shares" class="form-label">Shares</label>
-                                                    <input type="number" class="form-control" id="shares" placeholder="Enter number of shares">
-                                                </div>
-                                                <button type="button" class="btn btn-primary" onclick="addStock()">Add</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Stock Prediction Section -->
-                        <div class="row mt-4">
-                            <div class="col-12">
-                                <div class="card border-info">
-                                    <div class="card-header bg-light">
-                                        <h5 class="card-title mb-0">Stock Prediction</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <form id="predictionForm">
-                                            <div class="mb-3">
-                                                <label for="predictTicker" class="form-label">Stock Ticker</label>
-                                                <input type="text" class="form-control" id="predictTicker" placeholder="Enter stock ticker (e.g., AAPL)">
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="predictionPeriod" class="form-label">Prediction Period</label>
-                                                <select class="form-select" id="predictionPeriod">
-                                                    <option value="1_year">1 Year</option>
-                                                    <option value="5_years">5 Years</option>
-                                                    <option value="10_years">10 Years</option>
-                                                    <option value="6_months">6 Months</option>
-                                                    <option value="tomorrow">Tomorrow</option>
-                                                    <option value="yesterday">Yesterday</option>
-                                                </select>
-                                            </div>
-                                            <button type="button" class="btn btn-primary" onclick="predictStock()">Predict</button>
-                                        </form>
-                                        <div id="predictionResult" class="mt-4"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Symbol</th>
+                                    <th>Shares</th>
+                                    <th>Avg Price</th>
+                                    <th>Current Price</th>
+                                    <th>Total Value</th>
+                                    <th>Return</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="holdingsTable"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer class="bg-primary text-white text-center py-3 mt-4">
-        <p>&copy; 2024 StockWizard. All rights reserved.</p>
-    </footer>
-
-    <!-- Floating Login Form -->
-    <div id="loginForm" class="floating-login">
-        <button class="close-btn" onclick="hideLoginForm()">&times;</button>
-        <h5>Login</h5>
-        <form>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter email">
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Password">
-            </div>
-            <button type="button" class="btn btn-primary w-100" onclick="login()">Login</button>
-        </form>
-    </div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-waterfall"></script>
-    <script>
-        function toggleTheme() {
-            document.body.classList.toggle('dark-theme');
-        }
-
-        function showLoginForm() {
-            document.getElementById('loginForm').style.display = 'block';
-        }
-
-        function hideLoginForm() {
-            document.getElementById('loginForm').style.display = 'none';
-        }
-
-        function login() {
-            hideLoginForm();
-            document.getElementById('userProfile').style.display = 'block';
-        }
-
-        function addStockForm() {
-            document.getElementById('addStock').style.display = 'block';
-        }
-
-        function addStock() {
-            const stockName = document.getElementById('stockName').value;
-            const ticker = document.getElementById('ticker').value;
-            const shares = document.getElementById('shares').value;
-
-            if (stockName && ticker && shares) {
-                const table = document.getElementById('portfolioTable');
-                const rowCount = table.rows.length + 1;
-                const row = table.insertRow();
-                row.innerHTML = `
-                    <th scope="row">${rowCount}</th>
-                    <td>${stockName}</td>
-                    <td>${ticker}</td>
-                    <td>${shares}</td>
-                    <td><button class="btn btn-danger btn-sm" onclick="removeStock(this)">Remove</button></td>
-                `;
-                document.getElementById('addStockForm').reset();
-            } else {
-                alert('Please fill in all fields.');
-            }
-        }
-
-        function removeStock(button) {
-            const row = button.parentNode.parentNode;
-            row.remove();
-        }
-
-        async function predictStock() {
-            const ticker = document.getElementById('predictTicker').value;
-            const period = document.getElementById('predictionPeriod').value;
-            const resultDiv = document.getElementById('predictionResult');
-
-            if (!ticker) {
-                alert('Please enter a stock ticker.');
-                return;
-            }
-
-            // Simulate prediction result using linear regression
-            const latestPrice = Math.random() * 1000; // Simulate latest price
-            const prediction = linearRegressionPrediction(latestPrice, period);
-
-            resultDiv.innerHTML = `
-                <h5>Prediction Result</h5>
-                <p>The predicted change for ${ticker.toUpperCase()} over the selected period (${period.replace('_', ' ')}) is ${prediction.toFixed(2)}%.</p>
-            `;
-
-            // Update charts with the prediction result
-            updateCombinedStockPredictionsChart(latestPrice, prediction);
-        }
-
-        function linearRegressionPrediction(latestPrice, period) {
-            // Simulate a linear regression model for prediction
-            const coefficients = {
-                '1_year': 0.1,
-                '5_years': 0.5,
-                '10_years': 1.0,
-                '6_months': 0.05,
-                'tomorrow': 0.01,
-                'yesterday': -0.005
-            };
-            return latestPrice * (1 + coefficients[period]);
-        }
-
-        // Portfolio Analysis Functions
-        let riskChart = null;
-        let combinedStockPredictionsChart = null;
-
-        async function initializePortfolioAnalysis() {
-            // Initialize portfolio health score
-            updatePortfolioHealth();
-            
-            // Initialize risk distribution chart
-            createRiskDistributionChart();
-            
-            // Load AI recommendations
-            await updateAIRecommendations();
-
-            // Initialize combined stock predictions chart
-            await updateCombinedStockPredictionsChart();
-        }
-
-        function updatePortfolioHealth() {
-            // Simulate portfolio health calculation
-            const healthScore = Math.random() * 40 + 60; // Score between 60-100
-            const healthBar = document.getElementById('portfolioHealthBar');
-            const healthScoreElement = document.getElementById('portfolioHealthScore');
-            const healthMessage = document.getElementById('portfolioHealthMessage');
-            
-            healthBar.style.width = `${healthScore}%`;
-            healthBar.className = `progress-bar ${getHealthClass(healthScore)}`;
-            healthScoreElement.textContent = `${healthScore.toFixed(1)}%`;
-            
-            healthMessage.textContent = getHealthMessage(healthScore);
-            healthMessage.className = `text-${getHealthClass(healthScore).split('bg-')[1]}`;
-        }
-
-        function getHealthClass(score) {
-            if (score >= 80) return 'bg-success';
-            if (score >= 70) return 'bg-info';
-            if (score >= 60) return 'bg-warning';
-            return 'bg-danger';
-        }
-
-        function getHealthMessage(score) {
-            if (score >= 80) return 'Your portfolio is performing excellently!';
-            if (score >= 70) return 'Your portfolio is performing well with room for improvement.';
-            if (score >= 60) return 'Consider rebalancing your portfolio for better performance.';
-            return 'Immediate portfolio restructuring recommended.';
-        }
-
-        function createRiskDistributionChart() {
-            const ctx = document.getElementById('riskDistributionChart').getContext('2d');
-            
-            if (riskChart) {
-                riskChart.destroy();
-            }
-            
-            riskChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Low Risk', 'Medium Risk', 'High Risk'],
-                    datasets: [{
-                        data: [
-                            Math.random() * 40 + 20,
-                            Math.random() * 30 + 20,
-                            Math.random() * 20 + 10
-                        ],
-                        backgroundColor: [
-                            'rgba(40, 167, 69, 0.8)',
-                            'rgba(255, 193, 7, 0.8)',
-                            'rgba(220, 53, 69, 0.8)'
-                        ]
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
-                }
-            });
-        }
-
-        async function updateAIRecommendations() {
-            const stocks = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'META'];
-            const tableBody = document.getElementById('aiRecommendationsTable');
-            tableBody.innerHTML = '';
-            
-            for (const stock of stocks) {
-                const prediction = await generateStockPrediction(stock);
-                const row = createRecommendationRow(stock, prediction);
-                tableBody.appendChild(row);
-            }
-        }
-
-        function generateStockPrediction(stock) {
-            // Simulate ML prediction
-            return {
-                position: Math.random() * 1000,
-                recommendation: Math.random() > 0.5 ? 'BUY' : 'SELL',
-                predictedChange: (Math.random() - 0.5) * 10,
-                confidence: Math.random() * 30 + 70
-            };
-        }
-
-        function createRecommendationRow(stock, prediction) {
-            const row = document.createElement('tr');
-            const changeClass = prediction.predictedChange >= 0 ? 'text-success' : 'text-danger';
-            
-            row.innerHTML = `
-                <td>${stock}</td>
-                <td>$${prediction.position.toFixed(2)}</td>
-                <td class="${prediction.recommendation === 'BUY' ? 'text-success' : 'text-danger'}">${prediction.recommendation}</td>
-                <td class="${changeClass}">${prediction.predictedChange >= 0 ? '▲' : '▼'} ${Math.abs(prediction.predictedChange).toFixed(2)}%</td>
-                <td>${prediction.confidence.toFixed(1)}%</td>
-            `;
-            
-            return row;
-        }
-
-        async function updateCombinedStockPredictionsChart(latestPrice, prediction) {
-            const ctx = document.getElementById('combinedStockPredictionsChart').getContext('2d');
-            
-            if (combinedStockPredictionsChart) {
-                combinedStockPredictionsChart.destroy();
-            }
-            
-            combinedStockPredictionsChart = new Chart(ctx, {
-                type: 'scatter',
-                data: {
-                    datasets: [{
-                        label: 'Stock Predictions',
-                        data: [{
-                            x: latestPrice,
-                            y: prediction
-                        }],
-                        backgroundColor: 'rgba(0, 123, 255, 0.8)'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        x: {
-                            type: 'linear',
-                            position: 'bottom',
-                            title: {
-                                display: true,
-                                text: 'Latest Price'
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Predicted Change'
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // Initialize when the page loads
-        document.addEventListener('DOMContentLoaded', initializePortfolioAnalysis);
-
-        // Refresh data periodically
-        setInterval(updatePortfolioHealth, 60000); // Every minute
-        setInterval(updateAIRecommendations, 300000); // Every 5 minutes
-    </script>
-
-    <!-- Add this right before the footer -->
-    <div class="position-fixed bottom-0 end-0 m-3">
-        <!-- Chat Button -->
-        <button id="chatButton" class="btn btn-primary rounded-circle p-3 shadow" onclick="toggleChat()" title="Open chat with AI assistant">
-            <i class="fas fa-robot"></i>
-        </button>
-        
-        <!-- Chat Window -->
-        <div id="chatWindow" class="card shadow">
-            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">StockWizard AI Assistant</h5>
-                <button type="button" class="btn-close btn-close-white" onclick="toggleChat()" title="Close chat"></button>
-            </div>
-            <div class="card-body bg-light">
-                <div id="chatMessages" class="d-flex flex-column gap-2">
-                    <!-- Messages will appear here -->
-                    <div class="message-bot">
-                        Hello! I'm your AI stock assistant. Ask me about stock recommendations or market analysis.
-                    </div>
+    <!-- Add Stock Modal -->
+    <div class="modal fade" id="addStockModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Stock</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="input-group mt-3">
-                    <input type="text" id="chatInput" class="form-control" placeholder="Type your message here...">
-                    <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+                <div class="modal-body">
+                    <form id="addStockForm">
+                        <div class="mb-3">
+                            <label class="form-label">Stock Symbol</label>
+                            <input type="text" class="form-control" id="stockSymbol" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Number of Shares</label>
+                            <input type="number" class="form-control" id="shareCount" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Purchase Price</label>
+                            <input type="number" class="form-control" id="purchasePrice" step="0.01" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="addStockBtn">Add Stock</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-    function toggleChat() {
-        const chatWindow = document.getElementById('chatWindow');
-        chatWindow.style.display = chatWindow.style.display === 'none' ? 'block' : 'none';
-    }
-
-    function sendMessage() {
-        const chatInput = document.getElementById('chatInput');
-        const chatMessages = document.getElementById('chatMessages');
-        const message = chatInput.value.trim();
-
-        if (message) {
-            const userMessage = document.createElement('div');
-            userMessage.className = 'message-user';
-            userMessage.textContent = message;
-            chatMessages.appendChild(userMessage);
-
-            // Simulate AI response
-            const botMessage = document.createElement('div');
-            botMessage.className = 'message-bot';
-            botMessage.textContent = 'This is a simulated response from the AI assistant.';
-            chatMessages.appendChild(botMessage);
-
-            chatInput.value = '';
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-    }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.41.0/dist/apexcharts.min.js"></script>
+    <script src="static/js/portfolio.js"></script>
 </body>
 </html>
