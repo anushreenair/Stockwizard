@@ -1,0 +1,20 @@
+{
+  "name": "stockwizard",
+  "version": "1.0.0",
+  "description": "A modern web-based stock trading platform with real-time tracking, portfolio management, and AI-powered insights.",
+  "homepage": "https://github.com/anushreenair/Stockwizard#readme",
+  "bugs": {
+    "url": "https://github.com/anushreenair/Stockwizard/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anushreenair/Stockwizard.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "3.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
