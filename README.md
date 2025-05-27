@@ -1,4 +1,4 @@
-# StockWizard 📈
+# StockWizard Project
 
 A modern web-based stock trading platform with real-time tracking, portfolio management, and AI-powered insights.
 
